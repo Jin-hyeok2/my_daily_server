@@ -5,12 +5,14 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 @Setter
-public class CreateMemberRequest {
+public class MemberCreateRequest {
 
   @NotNull
   @Email
@@ -26,4 +28,6 @@ public class CreateMemberRequest {
   private String phoneNumber;
   @NotNull
   private String gender;
+  @NotNull
+  private String signUpFrom;
 }

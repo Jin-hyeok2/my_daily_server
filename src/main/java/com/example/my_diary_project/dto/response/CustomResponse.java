@@ -1,40 +1,38 @@
 package com.example.my_diary_project.dto.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 @Setter
 @Getter
-public class CustomResponse<T> extends ResponseEntity<T> {
-
+@NoArgsConstructor
+@AllArgsConstructor
+public class CustomResponse{
+  private HttpStatus status;
+  private int statusCode;
   private String message;
-  private T data;
+  private BaseProxy data;
 
-  private CustomResponse(HttpStatus status) {
-    super(status);
+  public static CustomResponse get(String message, BaseProxy data) {
+    HttpStatus httpStatus = HttpStatus.OK;
+    return new CustomResponse(httpStatus, httpStatus.value(), message, data);
   }
 
-  private CustomResponse(HttpStatus status, String message, T data) {
-    super(status);
-    this.message = message;
-    this.data = data;
+  public static CustomResponse post(String message, BaseProxy data) {
+    HttpStatus httpStatus = HttpStatus.CREATED;
+    return new CustomResponse(httpStatus, httpStatus.value(), message, data);
   }
 
-  public static <T> CustomResponse<T> get(String message, T data) {
-    return new CustomResponse<>(HttpStatus.OK, message, data);
+  public static CustomResponse patch(String message, BaseProxy data) {
+    HttpStatus httpStatus = HttpStatus.OK;
+    return new CustomResponse(httpStatus, httpStatus.value(), message, data);
   }
 
-  public static <T> CustomResponse<T> post(String message, T data) {
-    return new CustomResponse<>(HttpStatus.CREATED, message, data);
-  }
-
-  public static <T> CustomResponse<T> patch(String message, T data) {
-    return new CustomResponse<>(HttpStatus.OK, message, data);
-  }
-
-  public static <T> CustomResponse<T> delete() {
-    return new CustomResponse<>(HttpStatus.RESET_CONTENT);
+  public static CustomResponse delete(String message) {
+    HttpStatus httpStatus = HttpStatus.RESET_CONTENT;
+    return new CustomResponse(httpStatus, httpStatus.value(), message, null);
   }
 }

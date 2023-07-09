@@ -1,28 +1,20 @@
 package com.example.my_diary_project.status;
 
+import io.micrometer.common.util.StringUtils;
+import java.util.Arrays;
 import lombok.Getter;
 
 @Getter
 public enum Gender {
-  MALE("M", "Male"),
-  FEMALE("F", "Female"),
-  UNKNOWN("?", "Unknown");
+    MALE,
+    FEMALE;
 
-  private final String shortCut;
-  private final String mean;
-  Gender(String shortCut, String mean) {
-    this.shortCut = shortCut;
-    this.mean = mean;
-  }
-
-  public static Gender getGender(String shortCut) {
-    for (Gender gender : Gender.values()) {
-        if (gender.shortCut.equals(shortCut)) {
-            return gender;
-        }
+    public static Gender getGender(String target) {
+        if (StringUtils.isEmpty(target)) return null;
+        return Arrays.stream(Gender.values())
+            .filter(gender -> target.equalsIgnoreCase(gender.toString())).findFirst()
+            .orElseThrow(() -> new RuntimeException("규정되지 않은 성별입니다."));
     }
-    return UNKNOWN;
-  }
 }
 
 
