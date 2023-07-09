@@ -6,7 +6,8 @@ import lombok.Getter;
 
 @Getter
 @Builder(access = AccessLevel.PRIVATE)
-public class FriendProxy extends BaseProxy{
+public class FriendProxy extends BaseProxy {
+
     private ProfileProxy profile;
     private MemberProxy friend;
 

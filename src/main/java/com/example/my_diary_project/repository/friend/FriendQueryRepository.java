@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 @RequiredArgsConstructor
 public class FriendQueryRepository {
+
     private final JPAQueryFactory jpaQueryFactory;
 }

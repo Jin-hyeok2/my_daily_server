@@ -40,7 +40,7 @@ public class MemberController {
 
     @DeleteMapping("{id}")
     public CustomResponse delete(@PathVariable UUID id) {
-      memberService.delete(id);
+        memberService.delete(id);
         return CustomResponse.delete("잘 지웠어유");
     }
 

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BaseProxy {
+
     private UUID id;
     private LocalDateTime createdOn;
     private LocalDateTime updateOn;

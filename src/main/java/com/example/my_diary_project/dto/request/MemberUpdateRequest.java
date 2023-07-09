@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberUpdateRequest {
+
     private UUID id;
     private String nextPassword;
     private String curPassword;

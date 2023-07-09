@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class ProfileService {
+
     private final MemberQueryRepository memberQueryRepository;
     private final ProfileQueryRepository profileQueryRepository;
     private final ProfileCommandRepository profileCommandRepository;

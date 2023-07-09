@@ -31,6 +31,7 @@ import org.hibernate.annotations.Where;
 @SQLDelete(sql = "UPDATE member set is_deleted = true WHERE id = ?")
 @Where(clause = "is_deleted = false")
 public class Profile extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;

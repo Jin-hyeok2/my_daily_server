@@ -25,35 +25,35 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-  private final TokenProvider tokenProvider;
+    private final TokenProvider tokenProvider;
 
-  @Override
-  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-      FilterChain filterChain) throws ServletException, IOException {
-    String token = parseBearerToken(request);
-    User user = parseUserSpecification(token);
-    AbstractAuthenticationToken authenticated = UsernamePasswordAuthenticationToken.authenticated(
-        user, token, user.getAuthorities());
-    authenticated.setDetails(new WebAuthenticationDetails(request));
-    SecurityContextHolder.getContext().setAuthentication(authenticated);
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+        FilterChain filterChain) throws ServletException, IOException {
+        String token = parseBearerToken(request);
+        User user = parseUserSpecification(token);
+        AbstractAuthenticationToken authenticated = UsernamePasswordAuthenticationToken.authenticated(
+            user, token, user.getAuthorities());
+        authenticated.setDetails(new WebAuthenticationDetails(request));
+        SecurityContextHolder.getContext().setAuthentication(authenticated);
 
-    filterChain.doFilter(request, response);
-  }
+        filterChain.doFilter(request, response);
+    }
 
-  private String parseBearerToken(HttpServletRequest request) {
-    return Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
-        .filter(token -> token.substring(0, 7).equalsIgnoreCase("Bearer "))
-        .map(token -> token.substring(7))
-        .orElse(null);
-  }
+    private String parseBearerToken(HttpServletRequest request) {
+        return Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
+            .filter(token -> token.substring(0, 7).equalsIgnoreCase("Bearer "))
+            .map(token -> token.substring(7))
+            .orElse(null);
+    }
 
-  private User parseUserSpecification(String token) {
-    String[] split = Optional.ofNullable(token)
-        .filter(subject -> subject.length() >= 10)
-        .map(tokenProvider::validateTokenAndGetSubject)
-        .orElse("anonymous:anonymous")
-        .split(":");
+    private User parseUserSpecification(String token) {
+        String[] split = Optional.ofNullable(token)
+            .filter(subject -> subject.length() >= 10)
+            .map(tokenProvider::validateTokenAndGetSubject)
+            .orElse("anonymous:anonymous")
+            .split(":");
 
-    return new User(split[0], "", List.of(new SimpleGrantedAuthority(split[1])));
-  }
+        return new User(split[0], "", List.of(new SimpleGrantedAuthority(split[1])));
+    }
 }

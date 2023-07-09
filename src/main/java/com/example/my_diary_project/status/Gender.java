@@ -10,7 +10,9 @@ public enum Gender {
     FEMALE;
 
     public static Gender getGender(String target) {
-        if (StringUtils.isEmpty(target)) return null;
+        if (StringUtils.isEmpty(target)) {
+            return null;
+        }
         return Arrays.stream(Gender.values())
             .filter(gender -> target.equalsIgnoreCase(gender.toString())).findFirst()
             .orElseThrow(() -> new RuntimeException("규정되지 않은 성별입니다."));

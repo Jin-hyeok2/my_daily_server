@@ -15,8 +15,8 @@ public class MemberQueryExpression {
         return emails.length == 0 ? null : QMember.member.email.in(emails);
     }
 
-    public static  BooleanExpression signUpFrom(SignUpFrom... signUpFroms) {
-        return signUpFroms.length  == 0 ? null : QMember.member.signUpFrom.in(signUpFroms);
+    public static BooleanExpression signUpFrom(SignUpFrom... signUpFroms) {
+        return signUpFroms.length == 0 ? null : QMember.member.signUpFrom.in(signUpFroms);
     }
 
 }
