@@ -11,10 +11,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MemberUpdateRequest {
 
-    private UUID id;
+    private String id;
     private String nextPassword;
     private String curPassword;
     @Pattern(regexp = "^01(?:0|1|[6-9])-(?:[0-9]{3}|[0-9]{4})-[0-9]{4}$")
     private String phone;
     private String gender;
+
+    public UUID getId() {
+        return UUID.fromString(id);
+    }
 }

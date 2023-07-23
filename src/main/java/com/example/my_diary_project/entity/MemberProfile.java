@@ -6,7 +6,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import java.util.UUID;
@@ -26,7 +25,7 @@ import org.hibernate.annotations.Where;
 @DynamicUpdate
 @SQLDelete(sql = "UPDATE member set is_deleted = true WHERE id = ?")
 @Where(clause = "is_deleted = false")
-public class Friend extends BaseEntity {
+public class MemberProfile extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -36,7 +35,7 @@ public class Friend extends BaseEntity {
     @JoinColumn(name = "profile_id")
     private Profile profile;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "friend_id")
     private Member friend;
 }

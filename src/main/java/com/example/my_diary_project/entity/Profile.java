@@ -36,20 +36,20 @@ public class Profile extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    private Boolean isOriginProfile;
+    private String name;
+    private String imgPath;
+
     @ManyToOne
     @JoinColumn(name = "member_id")
     @Fetch(FetchMode.JOIN)
     private Member member;
 
-    private boolean isOriginProfile;
-
-    private String imgPath;
-
     @OneToMany(mappedBy = "profile")
     @Builder.Default
-    private List<Friend> friendList = new ArrayList<>();
+    private List<MemberProfile> profileFriendList = new ArrayList<>();
 
-    public void addFriend(Friend... friends) {
-        friendList.addAll(List.of(friends));
+    public void addFriend(MemberProfile... memberProfiles) {
+        profileFriendList.addAll(List.of(memberProfiles));
     }
 }

@@ -3,6 +3,7 @@ package com.example.my_diary_project.dto.response;
 import com.example.my_diary_project.entity.Member;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

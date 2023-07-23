@@ -6,12 +6,19 @@ import java.util.UUID;
 
 public class ProfileQueryExpression {
 
-    public static BooleanExpression id(UUID... ids) {
-        return ids.length == 0 ? null : QProfile.profile.id.in(ids);
+    public static BooleanExpression inId(UUID... ids) {
+        return (ids == null || ids.length == 0) ? null
+            : QProfile.profile.id.in(ids);
     }
 
-    public static BooleanExpression memberId(UUID... memberIds) {
-        return memberIds.length == 0 ? null : QProfile.profile.member.id.in(memberIds);
+    public static BooleanExpression inMemberId(UUID... memberIds) {
+        return (memberIds == null || memberIds.length == 0) ? null
+            : QProfile.profile.member.id.in(memberIds);
+    }
+
+    public static BooleanExpression eqIsOriginProfile(Boolean isOriginProfile) {
+        return (isOriginProfile == null) ? null
+            : QProfile.profile.isOriginProfile.eq(isOriginProfile);
     }
 
 }

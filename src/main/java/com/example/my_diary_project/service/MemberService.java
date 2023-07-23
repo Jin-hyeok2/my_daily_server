@@ -11,15 +11,20 @@ import com.example.my_diary_project.status.Gender;
 import com.example.my_diary_project.status.SignUpFrom;
 import io.micrometer.common.util.StringUtils;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class MemberService {
+public class MemberService implements UserDetailsService {
 
     private final MemberQueryRepository memberQueryRepository;
     private final MemberCommandRepository memberCommandRepository;
@@ -29,6 +34,18 @@ public class MemberService {
         return MemberProxy.fromEntity(
             memberQueryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("temp error")));
+    }
+
+    public List<MemberProxy> findAll(
+        UUID[] id,
+        Gender[] gender,
+        SignUpFrom[] signUpFrom
+    ) {
+        return memberQueryRepository.findAll(
+            MemberQueryExpression.id(id),
+            MemberQueryExpression.gender(gender),
+            MemberQueryExpression.signUpFrom(signUpFrom)
+        ).stream().map(MemberProxy::fromEntity).collect(Collectors.toList());
     }
 
     public MemberProxy create(MemberCreateRequest request) {
@@ -72,5 +89,10 @@ public class MemberService {
         if (passwordEncoder.matches(request.getCurPassword(), updateTarget.getPassword())) {
             updateTarget.setPassword(passwordEncoder.encode(request.getNextPassword()));
         }
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return null;
     }
 }
