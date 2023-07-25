@@ -1,38 +1,61 @@
 package com.example.my_diary_project.dto.response;
 
-import lombok.*;
+import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 @Setter
 @Getter
-public class CustomResponse<T> extends ResponseEntity<T> {
-    private String message;
-    private T data;
+@NoArgsConstructor
+@AllArgsConstructor
+public class CustomResponse {
 
-    private CustomResponse(HttpStatus status) {
-        super(status);
+    private HttpStatus status;
+    private int statusCode;
+    private BaseProxy[] content;
+    private int contentSize;
+
+    private CustomResponse(HttpStatus httpStatus, int statusCode, Object content, int contentSize) {
+        this.status = httpStatus;
+        this.statusCode = statusCode;
+        if (content instanceof  List) {
+            this.content = (BaseProxy[]) ((List<?>) content).toArray(Object[]::new);
+        } else {
+            BaseProxy[] baseProxies = new BaseProxy[1];
+            baseProxies[0] = (BaseProxy) content;
+            this.content = baseProxies;
+        }
+        this.contentSize = contentSize;
     }
 
-    private CustomResponse(HttpStatus status, String message, T data) {
-        super(status);
-        this.message = message;
-        this.data = data;
+    public static CustomResponse get(List<? extends BaseProxy> content) {
+        HttpStatus httpStatus = HttpStatus.OK;
+        return new CustomResponse(httpStatus, httpStatus.value(),
+            content.toArray(BaseProxy[]::new), content.size());
     }
 
-    public static <T> CustomResponse<T> get(String message, T data) {
-        return new CustomResponse<>(HttpStatus.OK, message, data);
+    public static CustomResponse get(BaseProxy content) {
+        HttpStatus httpStatus = HttpStatus.OK;
+        return new CustomResponse(httpStatus, httpStatus.value(), content, 1);
     }
 
-    public static <T> CustomResponse<T> post(String message, T data) {
-        return new CustomResponse<>(HttpStatus.CREATED, message, data);
+    public static CustomResponse post(BaseProxy content) {
+        HttpStatus httpStatus = HttpStatus.CREATED;
+        BaseProxy[] baseProxies = new BaseProxy[1];
+        baseProxies[0] = content;
+        return new CustomResponse(httpStatus, httpStatus.value(), baseProxies, 1);
     }
 
-    public static <T> CustomResponse<T> patch(String message, T data) {
-        return new CustomResponse<>(HttpStatus.OK, message, data);
+    public static CustomResponse patch(BaseProxy content) {
+        HttpStatus httpStatus = HttpStatus.OK;
+        return new CustomResponse(httpStatus, httpStatus.value(), content, 1);
     }
 
-    public static <T> CustomResponse<T> delete() {
-        return new CustomResponse<>(HttpStatus.RESET_CONTENT);
+    public static CustomResponse delete() {
+        HttpStatus httpStatus = HttpStatus.RESET_CONTENT;
+        return new CustomResponse(httpStatus, httpStatus.value(), null, 1);
     }
 }
