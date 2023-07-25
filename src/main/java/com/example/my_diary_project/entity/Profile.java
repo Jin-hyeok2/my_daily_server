@@ -37,7 +37,6 @@ public class Profile extends BaseEntity {
     private UUID id;
 
     private Boolean isOriginProfile;
-    private String name;
     private String imgPath;
 
     @ManyToOne
@@ -49,7 +48,7 @@ public class Profile extends BaseEntity {
     @Builder.Default
     private List<MemberProfile> profileFriendList = new ArrayList<>();
 
-    public void addFriend(MemberProfile... memberProfiles) {
-        profileFriendList.addAll(List.of(memberProfiles));
-    }
+//    public void addFriend(MemberProfile... memberProfiles) {
+//        profileFriendList.addAll(List.of(memberProfiles));
+//    }
 }

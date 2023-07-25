@@ -1,5 +1,10 @@
 package com.example.my_diary_project.dto.request;
 
-public class ProfileCreateRequest {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
+@AllArgsConstructor
+public class ProfileCreateRequest {
+    private String imgPath;
 }

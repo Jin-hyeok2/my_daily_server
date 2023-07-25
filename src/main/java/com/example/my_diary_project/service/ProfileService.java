@@ -1,6 +1,8 @@
 package com.example.my_diary_project.service;
 
+import com.example.my_diary_project.dto.request.ProfileCreateRequest;
 import com.example.my_diary_project.dto.response.ProfileProxy;
+import com.example.my_diary_project.entity.Profile;
 import com.example.my_diary_project.repository.Profile.ProfileCommandRepository;
 import com.example.my_diary_project.repository.Profile.ProfileQueryExpression;
 import com.example.my_diary_project.repository.Profile.ProfileQueryRepository;
@@ -18,10 +20,6 @@ public class ProfileService {
     private final ProfileQueryRepository profileQueryRepository;
     private final ProfileCommandRepository profileCommandRepository;
 
-    public List<ProfileProxy> findAll() {
-        return null;
-    }
-
     public ProfileProxy findById(UUID id) {
         return ProfileProxy.fromEntity(
             profileQueryRepository.findById(id)
@@ -36,5 +34,16 @@ public class ProfileService {
             ).stream()
             .map(ProfileProxy::fromEntity)
             .toList();
+    }
+
+    public ProfileProxy create(ProfileCreateRequest request) {
+        UUID tempMemberId = UUID.randomUUID();
+        return ProfileProxy.fromEntity(profileCommandRepository.save(
+            Profile.builder()
+                .isOriginProfile(profileQueryRepository.findByOne(
+                    ProfileQueryExpression.inMemberId(tempMemberId)).isEmpty())
+                .imgPath(request.getImgPath())
+                .member(memberQueryRepository.findById(tempMemberId).orElseThrow())
+                .build()));
     }
 }
